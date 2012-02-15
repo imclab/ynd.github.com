@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+ 
+<html>
+        <head>
+                <title>Learning the basics of canvas</title>
+                <meta charset="utf-8">
+ 
+                <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js"></script>
+                <script type="text/javascript" src="http://ynd.github.com/rbm_faces.js/js/jdataview.js"></script>
+				<script src="http://ynd.github.com/rbm_faces.js/js/jquery.prettyLoader.js" type="text/javascript" charset="utf-8"></script>
+				<link rel="stylesheet" href="http://ynd.github.com/rbm_faces.js/css/prettyLoader.css" type="text/css" media="screen" charset="utf-8" />
+                <script type="text/javascript" src="http://ynd.github.com/rbm_faces.js/js/rbm.js"></script>
+
+                <script type="text/javascript">
+                        function rbm_start() {
+							if (window.rbm1) {
+								window.rbm1.reset = true;
+								return;
+							}
+	
+                            var speed = 5;
+                            
+                            rbm0 = new RBM(1024,
+                                           1024,
+                                           "params/W0.bin",
+                                           "params/b0.bin",
+                                           "params/c0.bin",
+                                           $("#visibles-canvas"),
+                                           $("#0-hiddens-canvas"));
+                            
+							rbm1 = new RBM(1024,
+                                           512,
+                                           "params/W1.bin",
+                                           "params/b1.bin",
+                                           "params/c1.bin",
+                                           $("#0-hiddens-canvas"),
+                                           $("#1-hiddens-canvas"));
+
+							
+                            function gibbs() {
+                                rbm1.gibbs();
+								rbm0.sample_v(rbm1.v, true);
+								
+                                setTimeout(gibbs, speed);
+                            }
+                            
+                            setTimeout(gibbs, speed);
+
+							$('#start-rbm').text("Restart!");
+                        }
+                </script>
+        </head>
+ 
+        <body>
+				<div style="width: 320px;">
+					<div>
+						<canvas id="1-hiddens-canvas" width="320" height="40" style="background-image:url('http://ynd.github.com/rbm_faces.js/images/h1.png');">
+						</canvas>
+					</div>
+				
+					<div>
+						<canvas id="0-hiddens-canvas" width="320" height="80" style="background-image:url('http://ynd.github.com/rbm_faces.js/images/h0.png');">
+						</canvas>
+					</div>
+                
+					<div style="margin-top: 1em;">
+		                <canvas id="visibles-canvas" width="128" height="128" style="background-image:url('http://ynd.github.com/rbm_faces.js/images/v.png');">
+		                </canvas>
+		
+						<button id="start-rbm" type="button" style="margin-left: 7em; position: relative; top:-5.5em;" onClick="rbm_start();">Start!</button>
+					</div>
+				</div>
+				
+                <div id="mybox"></div>
+        </body>
+</html>
+
+
