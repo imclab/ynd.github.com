@@ -38,9 +38,11 @@
 
 							
                             function gibbs() {
-                                rbm1.gibbs();
-								rbm0.sample_v(rbm1.v, true);
-								
+								if (rbm1.ready()) {
+									rbm1.gibbs();
+									rbm0.sample_v(rbm1.v, true);
+								}
+                                
                                 setTimeout(gibbs, speed);
                             }
                             

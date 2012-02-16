@@ -117,10 +117,6 @@ RBM.prototype.sample_v = function(h, use_mean)
 
 RBM.prototype.gibbs = function()
 {
-    if (params_loading != 0) {
-        return;
-    }
-    
 	if (this.reset) {
 		for (var i = 0; i < this.v.length; i++) {
 			this.v[i] = 0;
@@ -131,6 +127,11 @@ RBM.prototype.gibbs = function()
 	
     this.h = this.sample_h(this.v);
     this.v = this.sample_v(this.h);
+}
+
+RBM.prototype.ready = function()
+{
+    return params_loading != 0;
 }
 
 RBM.prototype._load_array = function (filename, length)
