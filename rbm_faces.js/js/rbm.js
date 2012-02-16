@@ -131,7 +131,7 @@ RBM.prototype.gibbs = function()
 
 RBM.prototype.ready = function()
 {
-    return params_loading != 0;
+    return params_loading == 0;
 }
 
 RBM.prototype._load_array = function (filename, length)
