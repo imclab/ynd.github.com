@@ -1,3 +1,5 @@
+var params_loading = 0;
+
 function RBM(n_visibles,
              n_hiddens,
              W,
@@ -115,6 +117,10 @@ RBM.prototype.sample_v = function(h, use_mean)
 
 RBM.prototype.gibbs = function()
 {
+    if (params_loading != 0) {
+        return;
+    }
+    
 	if (this.reset) {
 		for (var i = 0; i < this.v.length; i++) {
 			this.v[i] = 0;
@@ -131,14 +137,22 @@ RBM.prototype._load_array = function (filename, length)
 {
 	var res = new Array(length);
 	
-	$.prettyLoader();
+	if (params_loading == 0) {
+	    $.prettyLoader();
+	}
+	
+	params_loading += 1;
 	
 	$.get(filename, function (view) {
 			for(var i = 0; i < length; i++) {
 				res[i] = view.getFloat32();
 			}
 			
-			$.prettyLoader.hide()
+			params_loading -= 1;
+			
+			if (params_loading == 0) {
+			    $.prettyLoader.hide();
+			}
 	  },
 	  'dataview'
 	);
