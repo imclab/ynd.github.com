@@ -36,14 +36,15 @@
                                            $("#0-hiddens-canvas"),
                                            $("#1-hiddens-canvas"));
 
-							
                             function gibbs() {
+								var begin = new Date();
 								if (rbm1.ready()) {
 									rbm1.gibbs();
 									rbm0.sample_v(rbm1.v, true);
 								}
+								var end = new Date();
                                 
-                                setTimeout(gibbs, speed);
+                                setTimeout(gibbs, Math.min(5, 50 - (end - begin)));
                             }
                             
                             setTimeout(gibbs, speed);
